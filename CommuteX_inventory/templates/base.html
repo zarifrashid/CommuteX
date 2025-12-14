@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{% block title %}CommuteX{% endblock %}</title>
+
+  <style>
+    
+    :root{
+      --primary:#0B4B95;
+      --primary2:#1D63C6;
+      --white:#FFFFFF;
+      --bg:#F5F7FB;
+      --text:#111827;
+      --muted:#5A6472;
+      --shadow: 0 14px 35px rgba(17,24,39,.10);
+      --radius: 16px;
+      --border: rgba(17,24,39,.10);
+      --ring: rgba(11,75,149,.14);
+      --danger:#dc2626;
+      --success:#16a34a;
+      --info:#2563eb;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(900px 500px at 15% 12%, rgba(11,75,149,.18), transparent 60%),
+        radial-gradient(850px 450px at 90% 10%, rgba(29,99,198,.14), transparent 60%),
+        radial-gradient(900px 500px at 30% 95%, rgba(11,75,149,.10), transparent 55%),
+        linear-gradient(180deg, #ffffff 0%, var(--bg) 55%, var(--bg) 100%);
+    }
+    a{color:inherit;text-decoration:none}
+    .container{width:min(1120px, 92vw); margin:0 auto}
+
+    /* Topbar */
+    .topbar{position:sticky; top:0; z-index:50; background:var(--primary); box-shadow:0 10px 26px rgba(11,75,149,.25);}
+    .topbar__inner{display:flex; align-items:center; justify-content:space-between; padding:14px 0;}
+    .brand{display:flex; gap:10px; align-items:center; color:var(--white)}
+    .brand__mark{width:40px; height:40px; border-radius:12px; display:grid; place-items:center; background:rgba(255,255,255,.18); border:1px solid rgba(255,255,255,.25); font-weight:900;}
+    .brand__text{font-weight:900;}
+
+    .nav{display:flex; gap:14px; align-items:center; color:rgba(255,255,255,.92)}
+    .nav__link{opacity:.92; padding:10px; border-radius:12px}
+    .nav__link:hover{background:rgba(255,255,255,.12)}
+    .nav__chip{padding:8px 12px; border-radius:999px; background:rgba(255,255,255,.14); border:1px solid rgba(255,255,255,.22); font-weight:700;}
+
+    /* Buttons */
+    .btn{display:inline-flex; align-items:center; justify-content:center; border-radius:14px; padding:11px 14px; font-weight:800; border:1px solid transparent; cursor:pointer;}
+    .btn--primary{background:linear-gradient(90deg,var(--primary),var(--primary2)); color:var(--white); box-shadow:0 14px 30px rgba(11,75,149,.20);}
+    .btn--ghost{background:rgba(255,255,255,.14); color:var(--white); border-color:rgba(255,255,255,.22);}
+    .btn--full{width:100%}
+    .btn--white{background:var(--white); color:var(--primary); border:1px solid rgba(255,255,255,.55)}
+    .btn--outlineWhite{background:transparent; color:var(--white); border:1px solid rgba(255,255,255,.55)}
+    .btn--outlineWhite:hover{background:rgba(255,255,255,.10)}
+
+    /* Messages */
+    .toast{padding:12px 14px; border-radius:14px; background:#fff; box-shadow:var(--shadow); border-left:6px solid var(--primary); margin:0 0 10px 0; border:1px solid var(--border);}
+    .toast--error{border-left-color:var(--danger)}
+    .toast--success{border-left-color:var(--success)}
+    .toast--info{border-left-color:var(--info)}
+
+    /* Landing styles */
+    .hero{padding:48px 0 18px;}
+    .hero__grid{display:grid; grid-template-columns:1.15fr .85fr; gap:22px; align-items:stretch;}
+    @media(max-width:960px){.hero__grid{grid-template-columns:1fr}}
+    .badge{display:inline-flex; gap:8px; padding:8px 12px; border-radius:999px; font-weight:900; color:var(--primary); background:rgba(11,75,149,.10); border:1px solid rgba(11,75,149,.18);}
+    .hero__title{margin:14px 0 0; font-size:42px; line-height:1.12; letter-spacing:-0.02em}
+    .hero__subtitle{margin:12px 0 0; color:var(--muted); line-height:1.6}
+    .hero__actions{display:flex; gap:12px; flex-wrap:wrap; margin-top:18px}
+    .hero__stats{display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-top:22px;}
+    @media(max-width:700px){.hero__stats{grid-template-columns:1fr}}
+    .stat{background:#fff; border-radius:var(--radius); padding:14px; border:1px solid var(--border); box-shadow:0 10px 24px rgba(17,24,39,.06);}
+    .stat__num{font-weight:900; color:var(--primary)}
+    .stat__label{color:var(--muted); font-size:13px; margin-top:4px}
+
+    .hero__card{border-radius:22px; background:#fff; border:1px solid var(--border); box-shadow:var(--shadow); overflow:hidden;}
+    .hero__cardTop{padding:18px 18px 12px; background:linear-gradient(180deg, rgba(11,75,149,.10), #fff);}
+    .miniTitle{font-weight:900; color:var(--primary)}
+    .miniP{margin-top:6px; color:var(--muted); font-size:13px; line-height:1.5}
+    .cardGrid{padding:14px 18px 18px; display:grid; gap:12px}
+    .miniCard{display:flex; gap:12px; padding:12px; border-radius:16px; background:var(--bg); border:1px solid var(--border);}
+    .icon{width:40px; height:40px; border-radius:14px; display:grid; place-items:center; background:rgba(11,75,149,.12);}
+    .miniCard__title{font-weight:900}
+    .miniCard__text{color:var(--muted); font-size:13px; margin-top:4px; line-height:1.45}
+
+    .section{padding:34px 0}
+    .section__title{margin:0; font-size:26px}
+    .section__subtitle{margin:10px 0 0; color:var(--muted); line-height:1.6}
+    .featureGrid{margin-top:18px; display:grid; grid-template-columns:repeat(3,1fr); gap:14px;}
+    @media(max-width:960px){.featureGrid{grid-template-columns:1fr}}
+    .featureCard{background:#fff; border-radius:var(--radius); padding:18px; border:1px solid var(--border); box-shadow:0 10px 24px rgba(17,24,39,.06);}
+    .featureCard h3{margin:0; color:var(--primary)}
+    .featureCard p{margin:10px 0 0; color:var(--muted); line-height:1.6}
+
+    .cta{padding:14px 0 54px;}
+    .cta__inner{border-radius:22px; background:linear-gradient(90deg,var(--primary),var(--primary2)); color:#fff; padding:22px; display:flex; justify-content:space-between; align-items:center; gap:18px; box-shadow:0 18px 45px rgba(11,75,149,.25);}
+    @media(max-width:860px){.cta__inner{flex-direction:column; align-items:flex-start;}}
+
+    /* Auth styles (ONLY used inside login/signup templates) */
+    .authWrap{display:grid; place-items:center; padding:40px 0;}
+    .authCard{width:min(520px, 94vw); background:#fff; border-radius:22px; box-shadow:var(--shadow); border:1px solid var(--border); padding:22px;}
+    .authHead h1{margin:0; font-size:26px}
+    .authHead p{margin:10px 0 0; color:var(--muted)}
+    .form{margin-top:16px; display:grid; gap:14px}
+    .field{display:grid; gap:8px}
+    .field label{font-weight:900; font-size:13px}
+    .grid2{display:grid; grid-template-columns:1fr 1fr; gap:12px}
+    @media(max-width:680px){.grid2{grid-template-columns:1fr}}
+    input{width:100%; padding:12px; border-radius:14px; border:1px solid rgba(17,24,39,.16); outline:none;}
+    input:focus{border-color:rgba(11,75,149,.55); box-shadow:0 0 0 4px var(--ring);}
+    .error{color:var(--danger); font-size:13px}
+    .authFoot{margin-top:14px; color:var(--muted); text-align:center}
+    .authFoot a{color:var(--primary); font-weight:900}
+
+    /* Footer */
+    .footer{background:#0a3e7b; color:rgba(255,255,255,.92); padding:28px 0; margin-top:20px;}
+    .footer__grid{display:grid; grid-template-columns:1.2fr 1fr 1fr; gap:16px}
+    @media(max-width:960px){.footer__grid{grid-template-columns:1fr}}
+    .footer__brand{font-weight:900; font-size:18px}
+    .footer__title{font-weight:900; margin-bottom:10px}
+    .footer__text{margin:8px 0 0; color:rgba(255,255,255,.82); line-height:1.6}
+    .footer__link{display:block; padding:6px 0; color:rgba(255,255,255,.90)}
+    .footer__link:hover{text-decoration:underline}
+
+    /* Page spacing */
+    main{min-height: calc(100vh - 220px);}
+  </style>
+</head>
+
+<body>
+  <header class="topbar">
+    <div class="container topbar__inner">
+      <a class="brand" href="{% url 'landing' %}">
+        <span class="brand__mark">CX</span>
+        <span class="brand__text">CommuteX</span>
+      </a>
+
+      <nav class="nav">
+        <a class="nav__link" href="{% url 'landing' %}">Home</a>
+        {% if user.is_authenticated %}
+          <span class="nav__chip">Hi, {{ user.username }}</span>
+          <a class="btn btn--ghost" href="{% url 'logout' %}">Logout</a>
+        {% else %}
+          <a class="nav__link" href="{% url 'login' %}">Login</a>
+          <a class="btn btn--primary" href="{% url 'signup' %}">Sign up</a>
+        {% endif %}
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    {% if messages %}
+      <div class="container" style="margin-top:14px;">
+        {% for message in messages %}
+          <div class="toast toast--{{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="footer">
+    <div class="container footer__grid">
+      <div>
+        <div class="footer__brand">CommuteX</div>
+        <p class="footer__text">University Transport Integration System — clean, safe, and trackable rides for students.</p>
+      </div>
+      <div>
+        <div class="footer__title">Quick Links</div>
+        <a class="footer__link" href="{% url 'landing' %}">Landing</a>
+        <a class="footer__link" href="{% url 'login' %}">Login</a>
+        <a class="footer__link" href="{% url 'signup' %}">Sign up</a>
+      </div>
+      <div>
+        <div class="footer__title">Contact</div>
+        <p class="footer__text">support@commutex.local</p>
+        <p class="footer__text">© {% now "Y" %} CommuteX</p>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

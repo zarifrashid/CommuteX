@@ -1,0 +1,19 @@
+# Python bytecode files
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Django specific
+*.log
+*.sqlite3
+db.sqlite3
+/static/
+/media/
+/venv/
+
+# IDE specific
+.idea/
+.vscode/
+
+# MySQL db dump file
+*.sql
