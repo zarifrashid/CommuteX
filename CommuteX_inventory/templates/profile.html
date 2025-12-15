@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block title %}Profile{% endblock %}
+
+{% block content %}
+  {% with u=profile_user|default:user %}
+  <div class="card">
+    <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap;">
+      <div>
+        <h2 style="margin:0 0 6px;">User Profile</h2>
+        <p style="margin:0; color:var(--muted); font-size:14px;">
+          Your account information.
+        </p>
+      </div>
+      <a href="{% url 'landing' %}" style="text-decoration:none;">
+        <button class="btn">Home</button>
+      </a>
+    </div>
+
+    <div style="margin-top:16px; display:grid; gap:12px; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr));">
+      <div class="card" style="box-shadow:none;">
+        <div style="font-weight:900; color:var(--primary); margin-bottom:8px;">Basic</div>
+        <div style="display:grid; gap:8px; font-size:14px;">
+          <div><b>Name:</b> {{ u.name|default:u.get_full_name|default:u.username|default:"—" }}</div>
+          <div><b>Email:</b> {{ u.email|default:"—" }}</div>
+          <div><b>Phone:</b> {{ u.phone|default:"—" }}</div>
+          <div><b>Gender:</b> {{ u.gender|default:"—" }}</div>
+          <div><b>Date of birth:</b> {{ u.date_of_birth|default:"—" }}</div>
+        </div>
+      </div>
+
+      <div class="card" style="box-shadow:none;">
+        <div style="font-weight:900; color:var(--primary); margin-bottom:8px;">Address</div>
+        <div style="display:grid; gap:8px; font-size:14px;">
+          <div><b>Street:</b> {{ u.street|default:"—" }}</div>
+          <div><b>Area:</b> {{ u.area|default:"—" }}</div>
+          <div><b>City:</b> {{ u.city|default:"—" }}</div>
+        </div>
+      </div>
+
+      <div class="card" style="box-shadow:none;">
+        <div style="font-weight:900; color:var(--primary); margin-bottom:8px;">Status</div>
+        <div style="display:grid; gap:8px; font-size:14px;">
+          <div><b>User ID:</b> {{ u.user_id|default:"—" }}</div>
+          <div><b>Verification:</b> {{ u.verification_status|default:"—" }}</div>
+          <div><b>Admin:</b>
+            {% if u.is_admin %}Yes{% else %}No{% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endwith %}
+{% endblock %}

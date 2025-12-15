@@ -1,61 +1,53 @@
-{% extends 'base_auth.html' %}
+{% extends "base_auth.html" %}
 {% block title %}Sign up{% endblock %}
 
 {% block content %}
-<div class="authWrap">
-  <div class="authCard">
-    <div class="authHead">
-      <h1>Create your account</h1>
-      <p>Sign up in one minute.</p>
-    </div>
+  <h2 style="margin:0 0 6px;">Sign up</h2>
+  <p style="margin:0 0 10px; color:var(--muted); font-size:14px;">Create your account.</p>
 
-    <form method="post" class="form">
-      {% csrf_token %}
+  {% if form.non_field_errors %}
+    <div class="error">{{ form.non_field_errors|striptags }}</div>
+  {% endif %}
 
-      <div class="field">
-        <label>Username</label>
-        {{ form.username }}
-        {% if form.username.errors %}
-          <div class="error">{{ form.username.errors|striptags }}</div>
-        {% endif %}
-      </div>
+  <form method="post">
+    {% csrf_token %}
 
-      <div class="field">
-        <label>Email</label>
-        {{ form.email }}
-        {% if form.email.errors %}
-          <div class="error">{{ form.email.errors|striptags }}</div>
-        {% endif %}
-      </div>
+    <label for="name">Name</label>
+    <input id="name" name="name" type="text" autocomplete="name" required>
 
-      <div class="field">
-        <label>Password</label>
-        {{ form.password1 }}
-        {% if form.password1.errors %}
-          <div class="error">{{ form.password1.errors|striptags }}</div>
-        {% endif %}
-      </div>
+    <label for="email">Email</label>
+    <input id="email" name="email" type="email" autocomplete="email" required>
 
-      <div class="field">
-        <label>Confirm Password</label>
-        {{ form.password2 }}
-        {% if form.password2.errors %}
-          <div class="error">{{ form.password2.errors|striptags }}</div>
-        {% endif %}
-      </div>
+    <label for="phone">Phone</label>
+    <input id="phone" name="phone" type="text" autocomplete="tel" required>
 
-      {% if form.non_field_errors %}
-        <div class="error">{{ form.non_field_errors|striptags }}</div>
-      {% endif %}
+    <label for="dob">Date of birth</label>
+    <input id="dob" name="date_of_birth" type="date" required>
 
-      <button type="submit" class="btn btn--primary">Create account</button>
-    <div style="height:14px;"></div>
-    </form>
+    <label for="gender">Gender</label>
+    <select id="gender" name="gender" required>
+      <option value="">Select</option>
+      <option value="Male">Male</option>
+      <option value="Female">Female</option>
+      <option value="Other">Other</option>
+    </select>
 
-    <div class="authFoot">
-      Already have an account?
-      <a href="{% url 'login' %}">Login</a>
-    </div>
+    <label for="street">Street</label>
+    <input id="street" name="street" type="text" required>
+
+    <label for="area">Area</label>
+    <input id="area" name="area" type="text" required>
+
+    <label for="city">City</label>
+    <input id="city" name="city" type="text" required>
+
+    <label for="password">Password</label>
+    <input id="password" name="password" type="password" autocomplete="new-password" required>
+
+    <button class="btn" type="submit">Create account</button>
+  </form>
+
+  <div class="foot">
+    Already have an account? <a href="{% url 'login' %}">Login</a>
   </div>
-</div>
 {% endblock %}

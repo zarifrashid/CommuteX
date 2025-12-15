@@ -1,45 +1,27 @@
-{% extends 'base_auth.html' %}
+{% extends "base_auth.html" %}
 {% block title %}Login{% endblock %}
 
 {% block content %}
-<div class="authWrap">
-  <div class="authCard">
-    <div class="authHead">
-      <h1>Welcome back</h1>
-      <p>Login to continue to CommuteX.</p>
-    </div>
+<h2 style="margin:0 0 6px;">Login</h2>
+<p style="margin:0 0 10px; color:var(--muted); font-size:14px;">Use username and password.</p>
 
-    <form method="post" class="form">
-      {% csrf_token %}
+{% if form.non_field_errors %}
+  <div class="error">{{ form.non_field_errors|striptags }}</div>
+{% endif %}
 
-      <div class="field">
-        <label>Username</label>
-        {{ form.username }}
-        {% if form.username.errors %}
-          <div class="error">{{ form.username.errors|striptags }}</div>
-        {% endif %}
-      </div>
+<form method="post">
+  {% csrf_token %}
 
-      <div class="field">
-        <label>Password</label>
-        {{ form.password }}
-        {% if form.password.errors %}
-          <div class="error">{{ form.password.errors|striptags }}</div>
-        {% endif %}
-      </div>
+  <label for="id_username">Username</label>
+  {{ form.username }}
 
-      {% if form.non_field_errors %}
-        <div class="error">{{ form.non_field_errors|striptags }}</div>
-      {% endif %}
+  <label for="id_password">Password</label>
+  {{ form.password }}
 
-      <button type="submit" class="btn btn--primary">Login</button>
-    <div style="height:14px;"></div>
-    </form>
+  <button class="btn" type="submit">Login</button>
+</form>
 
-    <div class="authFoot">
-      Don’t have an account?
-      <a href="{% url 'signup' %}">Sign up</a>
-    </div>
-  </div>
+<div class="foot">
+  Don’t have an account? <a href="{% url 'signup' %}">Sign up</a>
 </div>
 {% endblock %}

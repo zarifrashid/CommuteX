@@ -54,3 +54,15 @@ def logout_view(request):
     logout(request)
     messages.info(request, 'You are logged out.')
     return redirect('landing')  # ✅ no namespace
+
+
+from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
+from .models import User as ProfileUser
+
+@login_required
+def profile_view(request):
+    # Try to find your custom profile row using logged-in email
+    email = getattr(request.user, "email", "") or getattr(request.user, "username", "")
+    profile_user = ProfileUser.objects.filter(email=email).first()
+    return render(request, "profile.html", {"profile_user": profile_user})

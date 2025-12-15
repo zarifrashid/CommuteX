@@ -2,3 +2,6 @@
 python -m venv venv
 .\venv\Scripts\activate
 
+## Run site
+python manage.py migrate
+python manage.py runserver
